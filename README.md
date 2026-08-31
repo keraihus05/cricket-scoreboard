@@ -1,92 +1,140 @@
-
 # Cricket Scoreboard
 
-A terminal-based cricket scorer written in Python. Pick two teams, set the
-playing XIs, and score the match ball-by-ball straight from the command line.
+A command-line cricket scoring application built in Python.
 
-## Features
+I built this project to improve my understanding of object-oriented programming and to get experience building a larger Python program with multiple classes interacting with one another. Rather than having all of the logic in one file, I wanted to structure the application around the different components of a cricket match, such as players, teams, innings and the match itself.
 
-- Pick any two teams from a built-in set of squads (or add your own)
-- Select a playing XI by name, with partial/surname matching (e.g. typing
-  `azam` finds Babar Azam) - or type `skip` at any point to auto-fill the
-  rest of the XI
-- Choose your opening striker and non-striker at the start of each innings,
-  and pick the next batter live as wickets fall
-- Full ball-by-ball scoring: runs, wickets (with dismissal type), and extras
-  (wides, no-balls, byes, leg byes, penalties)
-- Automatic over/bowler management, including a cap on overs per bowler
-- A tidy, live-updating scoreboard after every ball
-- Automatic run-chase tracking and match result in the second innings
+## What it does
 
-## Requirements
+The application allows you to run a limited-overs cricket match from the terminal, starting with team selection and finishing with the result.
 
-- Python 3.9+
-- No external dependencies - everything runs from the standard library
+Some of the main features include:
 
-## Getting Started
+* Selecting two teams from the available squads
+* Selecting the playing XI for each team
+* Choosing the number of overs
+* Selecting the opening batters and bowler
+* Scoring the match ball-by-ball
+* Handling runs from 0–6
+* Handling wickets and different dismissal types
+* Handling wides, no-balls, byes, leg byes and penalty runs
+* Automatically managing strike rotation
+* Managing overs and changing bowlers
+* Keeping track of individual player statistics
+* Managing a run chase during the second innings
+* Automatically determining the result of the match
+
+## Project structure
+
+The project is split into several Python files, with each class responsible for a different part of the match.
+
+```text
+cricket-scoreboard/
+│
+├── main.py
+├── match.py
+├── innings.py
+├── team.py
+├── player.py
+├── squads.py
+├── utils.py
+└── README.md
+```
+
+### `Player`
+
+The `Player` class stores information about an individual player and keeps track of their batting and bowling statistics during the match.
+
+### `Team`
+
+The `Team` class is responsible for creating the players in a squad and selecting the playing XI and batting order.
+
+### `Innings`
+
+The `Innings` class contains most of the ball-by-ball scoring logic. It keeps track of the score, wickets, overs, current batters and bowler, as well as handling things such as strike rotation and extras.
+
+### `Match`
+
+The `Match` class manages the overall match. It brings the teams and innings together and handles things such as which team bats first, moving between innings and deciding the winner.
+
+### `Squads`
+
+This contains the player lists used to create the available teams. New teams can be added without having to change the main match logic.
+
+### `Utils`
+
+Contains helper functions used in different parts of the application, including player-name matching.
+
+## Running the project
+
+The project uses Python's standard library and does not require any external packages.
+
+Clone the repository:
 
 ```bash
-git clone <your-repo-url>
-cd <repo-folder>
+git clone https://github.com/keraihus05/cricket-scoreboard.git
+cd cricket-scoreboard
+```
+
+Run the application with:
+
+```bash
 python3 main.py
 ```
 
-## How to Play
+## Using the scoreboard
 
-When you run `main.py` you'll be walked through:
+The program guides you through setting up a match.
 
-1. **Pick two teams** - type a team name (or part of one) from the list shown
-2. **Pick each playing XI** - type player names one at a time, or `skip` to
-   auto-fill whoever's left
-3. **Choose the match format** - overs per innings (e.g. `10`, `20`, `50`)
-4. **Choose who bats first**
-5. **Pick openers and a bowler** for each innings
+You first choose the two teams, select their playing XIs and decide how many overs the match will have. You then choose which team bats first and select the opening batters and bowler.
 
-From there, you'll be prompted for `CURRENT BALL:` after every delivery.
-Accepted inputs:
+Once the innings begins, deliveries can be entered directly through the terminal.
 
-| Input | Meaning |
-|---|---|
-| `0`-`6` | Runs scored off the bat |
-| `wicket` / `w` / `out` | A dismissal (you'll be asked how) |
-| `lbw`, `caught`, `stumped`, `bowled`, `hitwicket`, `runout`, `obstructingthefield`, `retiredhurt` | A dismissal, with the method already specified |
-| `wide`, `noball` / `nb`, `bye`, `leg bye`, `penalty` | An extra (you'll be asked how many runs) |
-| `exit` / `quit` / `break` / `end` | Ends the match early |
+For example:
 
-When a wicket falls, you'll be asked who's out (matched against the two
-batters at the crease) and who's coming in next - both support partial name
-matching too.
-
-## Project Structure
-
-```
-main.py     - entry point: team selection and the game loop
-match.py    - Match class: coin toss, format, and running both innings
-innings.py  - Innings class: ball-by-ball scoring logic and the scoreboard
-team.py     - Team class: building a playing XI from a squad
-player.py   - Player class: per-player batting/bowling stats
-squads.py   - built-in squad data (add your own teams here)
-utils.py    - shared name-matching helper (supports surname-only input)
+```text
+0 - 6       Runs scored
+wide        Wide
+noball      No-ball
+bye          Bye
+leg bye      Leg bye
+wicket       Wicket
 ```
 
-## Adding Your Own Teams
+The program then updates the score and player statistics after each delivery.
 
-Open `squads.py` and add a new entry to the `SQUADS` dictionary:
+Player names can also be entered using recognisable parts of their name rather than always requiring the full name.
 
-```python
-"My Team": [
-    "Player One",
-    "Player Two",
-    # ... at least 11 players
-],
-```
+## What I learned
 
-It'll show up automatically in the team picker next time you run the game.
+The main purpose of this project was to move beyond smaller Python exercises and build something with several interacting components.
 
-## Possible Future Improvements
+One of the biggest things I learned was how to manage state across different objects. A single delivery can change several things at once. For example, scoring an odd number of runs can change the striker, while a wicket can remove a player and bring in a new batter. An over can also trigger a change of bowler and the strike can change again.
 
-- Save/load match state so a game can be resumed
-- Export a full scorecard at the end of the match
-- Support for tied matches / DLS-style adjustments
+As the project became more complicated, I had to think more carefully about which class should be responsible for each piece of logic. This helped me understand the practical side of object-oriented programming and the importance of keeping different parts of a program organised.
 
+I also spent a lot of time handling edge cases and validating user input. Cricket has quite a few rules that interact with one another, so making sure that the program behaved correctly in different situations became an important part of the project.
 
+## Future improvements
+
+There are several things I would like to add in the future, including:
+
+* Unit tests using `pytest`
+* Saving and loading matches
+* Exporting completed scorecards
+* More detailed batting and bowling scorecards
+* Support for tied matches and Super Overs
+* More advanced match rules
+* Storing previous match data
+* Analysing player and team statistics
+* Using historical cricket data to build a win-probability model
+
+The last few ideas are particularly interesting to me because they would allow me to build on this project using statistics and machine learning, rather than just continuing to add features to the scoring system.
+
+## Next steps
+
+This project is mainly a programming project, but I see it as the starting point for a larger cricket data project.
+
+The next stage would be to work with real ball-by-ball cricket data, analyse player and team performance, and eventually investigate whether statistical and machine-learning models can be used to estimate the probability of a team winning a match.
+
+That would allow me to combine the programming skills developed here with my background in mathematics and statistics.
