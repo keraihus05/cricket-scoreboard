@@ -89,8 +89,4 @@ It'll show up automatically in the team picker next time you run the game.
 - Export a full scorecard at the end of the match
 - Support for tied matches / DLS-style adjustments
 
-## License
-
-Add a license of your choice here (e.g. MIT) if you'd like others to be able
-to reuse this code.
 
