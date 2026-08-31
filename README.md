@@ -1,3 +1,4 @@
+
 # Cricket Scoreboard
 
 A terminal-based cricket scorer written in Python. Pick two teams, set the
@@ -92,3 +93,4 @@ It'll show up automatically in the team picker next time you run the game.
 
 Add a license of your choice here (e.g. MIT) if you'd like others to be able
 to reuse this code.
+
